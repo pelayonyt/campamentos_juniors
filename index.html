@@ -51,13 +51,13 @@
                     <input type="text" id="searchInput" class="block w-full pl-11 pr-4 py-3.5 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all sm:text-sm font-medium" placeholder="Buscar por nombre, ubicación, capacidad...">
                 </div>
 
-                <!-- Botones de Acción (Nuevo Campamento y Sincronizar) -->
+                <!-- Botones de Acción -->
                 <div class="w-full lg:w-auto flex flex-col sm:flex-row gap-3">
                     <button id="syncBtn" class="w-full sm:w-auto px-5 py-3.5 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-bold rounded-xl transition-all flex items-center justify-center gap-2 whitespace-nowrap">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         Actualizar
                     </button>
-                    <!-- BOTÓN 1: Añadir Nuevo Campamento (Apunta al enlace vacío) -->
+                    <!-- BOTÓN 1: Añadir Nuevo Campamento -->
                     <a id="btnNuevoCampamento" href="#" target="_blank" class="w-full sm:w-auto px-6 py-3.5 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 whitespace-nowrap">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
                         Añadir Nuevo Campamento
@@ -65,7 +65,7 @@
                 </div>
             </div>
             
-            <!-- Filtros Rápidos (Píldoras) -->
+            <!-- Filtros Rápidos -->
             <div class="flex flex-wrap gap-2 items-center border-t border-gray-100 pt-4" id="quickFilters">
                 <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mr-2">Filtros Rápidos:</span>
                 <button class="filter-btn px-4 py-2 rounded-full border bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors shadow-sm" data-filter="piscina">🏊 Con Piscina</button>
@@ -122,7 +122,7 @@
                 <div class="mb-8 flex justify-end">
                     <a id="modalAddCommentBtn" href="#" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold rounded-xl transition-colors border border-blue-200 shadow-sm">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                        Añadir nuevo info / curso
+                        Añadir nueva info / curso
                     </a>
                 </div>
 
@@ -131,11 +131,10 @@
                     <div id="modalTags" class="flex flex-wrap gap-2 sm:gap-3"></div>
                 </div>
                 
-                <!-- Historial de Comentarios -->
                 <div class="mb-6">
                     <h3 class="text-xs font-bold tracking-widest text-gray-400 uppercase mb-4 border-b pb-2">Historial de Valoraciones</h3>
                     <div id="modalComment" class="flex flex-col gap-4 mt-4">
-                        <!-- Aquí se inyectan los comentarios cronológicos -->
+                        <!-- Comentarios inyectados aquí -->
                     </div>
                 </div>
 
@@ -167,22 +166,15 @@
 
     <script>
         // ==========================================
-        // 🚨 TUS ENLACES IMPORTANTES AQUÍ ABAJO 🚨
+        // 🚨 ENLACES VINCULADOS 🚨
         // ==========================================
         
-        // 1. Tu enlace del CSV (El Excel publicado en la web)
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQkkD3GS4EhOQGa6binoNrL_Hgle9yX6U6cd_xkkEGyOSC2dphCdV3u4la25nJV8HEDMWIm2yh9Gtyf/pub?gid=1047978372&single=true&output=csv';
-        
-        // 2. Tu enlace normal de Google Forms (Para añadir campamentos NUEVOS)
         const FORM_URL_NUEVO = 'https://docs.google.com/forms/d/e/1FAIpQLScf1kIetbDOE1SjZSE0t5FpF1ey06vbx3UU_QGLHJpigf9Zuw/viewform?usp=dialog';
-        
-        // 3. Tu enlace "Pre-rellenado" (El que tiene la palabra "PALABRA_MAGICA" al final)
         const FORM_URL_PRERELLENADO = 'https://docs.google.com/forms/d/e/1FAIpQLScf1kIetbDOE1SjZSE0t5FpF1ey06vbx3UU_QGLHJpigf9Zuw/viewform?usp=pp_url&entry.1204644204=PALABRA_MAGICA';
 
         // ==========================================
 
-
-        // Asignar el enlace al botón verde de "Añadir Nuevo"
         document.getElementById('btnNuevoCampamento').href = FORM_URL_NUEVO;
 
         const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&q=80&w=800';
@@ -200,7 +192,6 @@
         const noResults = document.getElementById('noResults');
         const modal = document.getElementById('campModal');
 
-        // GESTIÓN DE FILTROS RÁPIDOS
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const filterVal = e.target.getAttribute('data-filter');
@@ -261,9 +252,11 @@
                 // LÓGICA DE ICONOS DE TARJETA
                 const hasPiscina = camp.Piscina && camp.Piscina.toLowerCase().includes('piscina') && !camp.Piscina.toLowerCase().includes('sin');
                 const hasCocina = camp.Cocina && camp.Cocina.toLowerCase().includes('completa');
+                const isExclusivo = camp.Compartir && camp.Compartir.toLowerCase().includes('no se comparte');
                 
                 const iconPiscina = hasPiscina ? `<span class="bg-blue-500/95 text-white text-sm px-2.5 py-1.5 rounded-lg shadow-md border border-blue-400" title="Tiene Piscina">🏊</span>` : '';
                 const iconCocina = hasCocina ? `<span class="bg-orange-500/95 text-white text-sm px-2.5 py-1.5 rounded-lg shadow-md border border-orange-400" title="Cocina Completa">🍳</span>` : '';
+                const iconExclusivo = isExclusivo ? `<span class="bg-purple-500/95 text-white text-sm px-2.5 py-1.5 rounded-lg shadow-md border border-purple-400" title="Exclusivo (No se comparte)">🔒</span>` : '';
                 
                 const capBadge = camp.Capacidad ? `<div class="bg-black/60 backdrop-blur-md text-white text-xs font-extrabold px-3 py-1.5 rounded-full flex items-center shadow-lg border border-white/20">👥 ${camp.Capacidad}</div>` : '';
                 const badgeVisitado = (camp.Visitado && camp.Visitado.toLowerCase() === 'sí') 
@@ -279,7 +272,7 @@
                         <img src="${finalImgUrl}" onerror="this.onerror=null; this.src='${DEFAULT_IMAGE}';" alt="${camp.Nombre}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 z-0 bg-gray-200">
                         
                         <div class="absolute bottom-0 left-0 w-full p-6 z-20 flex flex-col justify-end h-full">
-                            <div class="flex gap-2 mb-3">${iconPiscina}${iconCocina}</div>
+                            <div class="flex gap-2 mb-3">${iconPiscina}${iconCocina}${iconExclusivo}</div>
                             <h2 class="text-2xl font-extrabold text-white mb-1.5 leading-tight group-hover:text-blue-300 transition-colors line-clamp-2 drop-shadow-sm">${camp.Nombre || 'Sin nombre'}</h2>
                             <p class="text-gray-200 flex items-center text-sm font-semibold drop-shadow-sm">
                                 <svg class="w-4 h-4 mr-1 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
@@ -303,14 +296,11 @@
             document.getElementById('modalTitle').textContent = camp.Nombre || 'Sin nombre';
             document.getElementById('modalLocation').textContent = camp.Ubicación || 'Ubicación desconocida';
 
-            // GENERAR ENLACE PRE-RELLENADO PARA EL BOTÓN "Añadir Comentario"
             if (camp.Nombre) {
-                // Reemplaza PALABRA_MAGICA por el nombre del campamento enlazado y codificado
                 const urlLista = FORM_URL_PRERELLENADO.replace('PALABRA_MAGICA', encodeURIComponent(camp.Nombre));
                 document.getElementById('modalAddCommentBtn').href = urlLista;
             }
             
-            // RENDERIZAR HISTORIAL DE COMENTARIOS
             const commentBox = document.getElementById('modalComment');
             if (camp.Historial && camp.Historial.length > 0) {
                 commentBox.innerHTML = camp.Historial.map(h => `
@@ -389,7 +379,6 @@
                     complete: function(results) {
                         if (results.data.length > 0) {
                             
-                            // MAGIA DE AGRUPACIÓN POR HISTORIAL
                             let groupedCamps = {};
                             results.data.forEach(camp => {
                                 if (!camp.Nombre) return;
@@ -407,7 +396,7 @@
                                 
                                 if (camp.Comentario && camp.Comentario.trim() !== '') {
                                     groupedCamps[key].Historial.push({
-                                        curso: (camp.Curso && camp.Curso.trim() !== '') ? camp.Curso.trim() : 'Actual',
+                                        curso: (camp.Curso && camp.Curso.trim() !== '') ? camp.Curso.trim() : '26-27',
                                         texto: camp.Comentario.trim()
                                     });
                                 }
