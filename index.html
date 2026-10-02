@@ -31,7 +31,6 @@
 </head>
 <body class="bg-gray-50 min-h-screen text-gray-800">
 
-    <!-- CABECERA ADAPTATIVA (Solucionado el corte en móviles) -->
     <header class="relative min-h-[400px] h-auto py-16 md:py-24 w-full flex items-center justify-center overflow-hidden">
         <img src="portada.jpg.jpg" alt="Fondo campamento" class="absolute inset-0 w-full h-full object-cover z-0 brightness-50">
         <div class="relative z-10 text-center px-4 md:px-8 mt-4">
@@ -70,7 +69,6 @@
                 <span class="text-xs font-bold text-gray-400 uppercase tracking-wider mr-2">Filtros Rápidos:</span>
                 <button class="filter-btn px-4 py-2 rounded-full border bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors shadow-sm" data-filter="piscina">🏊 Con Piscina</button>
                 <button class="filter-btn px-4 py-2 rounded-full border bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors shadow-sm" data-filter="cocina propia">🍳 Cocina Propia</button>
-                <!-- FILTRO PC ARREGLADO -->
                 <button class="filter-btn px-4 py-2 rounded-full border bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors shadow-sm" data-filter="pension_completa">🍽️ Pensión Completa</button>
                 <button class="filter-btn px-4 py-2 rounded-full border bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors shadow-sm" data-filter="no se comparte">🔒 Exclusivo</button>
                 <button class="filter-btn px-4 py-2 rounded-full border bg-white text-gray-700 text-sm font-semibold hover:bg-gray-50 transition-colors shadow-sm" data-filter="camp_visitado">✅ Visitado</button>
@@ -259,12 +257,26 @@
                 const badgeVisitado = (camp.Visitado && camp.Visitado.toLowerCase() === 'sí') 
                     ? `<div class="bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg> Visitado</div>` : '';
 
+                // NUEVA ETIQUETA: Tiempo desde Requena
+                const timeBadge = (camp["Tiempo desde Requena"] && camp["Tiempo desde Requena"].trim() !== '') 
+                    ? `<div class="bg-black/60 backdrop-blur-md text-white text-xs font-extrabold px-3 py-1.5 rounded-full flex items-center shadow-lg border border-white/20 gap-1.5">
+                         <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                         ${camp["Tiempo desde Requena"]}
+                       </div>` : '';
+
                 const cardHTML = `
                     <div onclick="openModal(${index})" class="block group card-hover card-active rounded-3xl overflow-hidden bg-white shadow-lg relative h-96 cursor-pointer border border-gray-100">
+                        <!-- Esquina Superior Izquierda -->
                         <div class="absolute top-4 left-4 flex flex-col gap-2 z-20 items-start">
                             ${badgeVisitado}
                             ${capBadge}
                         </div>
+                        
+                        <!-- Esquina Superior Derecha -->
+                        <div class="absolute top-4 right-4 flex flex-col gap-2 z-20 items-end">
+                            ${timeBadge}
+                        </div>
+
                         <div class="absolute inset-0 img-gradient z-10"></div>
                         <img src="${finalImgUrl}" onerror="this.onerror=null; this.src='${DEFAULT_IMAGE}';" alt="${camp.Nombre}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 z-0 bg-gray-200">
                         
@@ -452,7 +464,6 @@
             const filtered = currentData.filter(camp => {
                 const visitadoTag = (camp.Visitado && camp.Visitado.toLowerCase() === 'sí') ? 'camp_visitado' : '';
                 
-                // ETIQUETA SECRETA PARA PC ARREGLADA (Detecta PC o Pensión Completa)
                 let pcTag = '';
                 if (camp.Cocina) {
                     const cocinaStr = camp.Cocina.toLowerCase();
